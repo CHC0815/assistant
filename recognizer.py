@@ -15,7 +15,7 @@ class Recognizer:
             print(status, file=sys.stderr)
         self.q.put(bytes(indata))
 
-    def listen(self):
+    def listen(self, trigger: str|None = None):
         result = {
             "success": True,
             "error": None,
@@ -30,10 +30,17 @@ class Recognizer:
             rec = KaldiRecognizer(self.model, samplerate)
             while True:
                 data = self.q.get()
-                if rec.AcceptWaveform(data):
-                    res = json.loads(rec.Result())["text"]
-                    result["transcription"] = res
-                    break
+                if trigger is None:
+                    if rec.AcceptWaveform(data):
+                        res = json.loads(rec.Result())["text"]
+                        result["transcription"] = res
+                        break
+                else:
+                    if rec.AcceptWaveform(data):
+                        res = json.loads(rec.Result())["text"]
+                        if trigger in res:
+                            result["transcription"] = res
+                            break
 
         return result
 

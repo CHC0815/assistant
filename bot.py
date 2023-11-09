@@ -11,9 +11,9 @@ class Bot:
         self.tools = []
         self.available_functions = {}
 
-    def add_tool(self, tool_desc, func):
-        self.tools.append(tool_desc)
-        self.available_functions[tool_desc["function"]["name"]] = func
+    def add_tool(self, tool):
+        self.tools.append(tool)
+
         
     def add_message(self, role, content):
         self.messages.append({"role": role, "content": content})
@@ -22,20 +22,27 @@ class Bot:
         response = self.client.chat.completions.create(
             model=self.model,
             messages=self.messages,
-            tools=self.tools,
+            tools=list(map(lambda el: el["tool_desc"],self.tools)),
             tool_choice="auto",  # auto is default, but we'll be explicit
         )
 
         response_message = response.choices[0].message
         tool_calls = response_message.tool_calls
 
+        if tool_calls is None:
+            return response_message
+
+        available_functions = dict(map(lambda el: (el["name"], el["fun"]), self.tools))
+
         for tool_call in tool_calls:
             function_name = tool_call.function.name
-            function_to_call = self.available_functions[function_name]
+            function_to_call = available_functions[function_name]
             function_args = json.loads(tool_call.function.arguments)
+
+            function_params = list(filter(lambda el: el["name"] == function_name, self.tools))[0]["params"]
+            args_dict = dict(map(lambda el: (el, function_args.get(el)), function_params))
             function_response = function_to_call(
-                light_id=function_args.get("light_id"),
-                status=function_args.get("status"),
+                **args_dict
             )
 
         return response_message

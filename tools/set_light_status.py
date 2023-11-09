@@ -1,4 +1,26 @@
-SET_LIGHT_STATUS_TOOL = {
+from home import set_state, get_state
+import configparser
+
+config = configparser.ConfigParser()
+
+def _set_light_status(light_id, status):
+    config.read('config.ini')
+    if light_id in config["Mappings"]:
+        id = config["Mappings"][light_id]
+        return set_state(id, status)
+    return f"{light_id} not found"
+
+def _get_tool_set_light_status():
+    return (SET_LIGHT_STATUS_TOOL, set_light_status)
+
+SET_LIGHT_STATUS = {
+    "name": "set_light_status",
+    "fun": _set_light_status,
+    "params": [
+        "light_id",
+        "status"
+    ],
+    "tool_desc": {
             "type": "function",
             "function": {
                 "name": "set_light_status",
@@ -17,9 +39,4 @@ SET_LIGHT_STATUS_TOOL = {
             },
     }
 
-def set_light_status(light_id, status):
-    print(f"Setting light {light_id} to {status}")
-    return f"Setting light {light_id} to {status}"
-
-def get_tool_set_light_status():
-    return (SET_LIGHT_STATUS_TOOL, set_light_status)
+}
