@@ -3,8 +3,8 @@ import time
 
 class Context:
     def __init__(self, role, content, timestamp=None):
-        self.role = role
-        self.content = content
+        self.role = role or ""
+        self.content = content or ""
         self.timestamp = timestamp or time.time()
 
 class ContextQueue:
@@ -12,7 +12,7 @@ class ContextQueue:
         config = configparser.ConfigParser()
         config.read("config.ini")
 
-        self.timeout = int(config["Assistant"]["context_timeout"]) or 5
+        self.timeout = (int(config["Assistant"]["context_timeout"]) or 5) * 60
         self.amount = int(config["Assistant"]["context_amount"]) or 10
 
         self.queue: list[Context] = []

@@ -10,8 +10,6 @@ def _set_light_status(light_id, status):
         return set_state(id, status)
     return f"{light_id} not found"
 
-def _get_tool_set_light_status():
-    return (SET_LIGHT_STATUS_TOOL, set_light_status)
 
 SET_LIGHT_STATUS = {
     "name": "set_light_status",
@@ -24,7 +22,7 @@ SET_LIGHT_STATUS = {
             "type": "function",
             "function": {
                 "name": "set_light_status",
-                "description": "Sets the status of a light to on or off",
+                "description": "Sets the status of a light to 'on' or 'off'",
                 "parameters": {
                     "type": "object",
                     "properties": {

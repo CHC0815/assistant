@@ -27,7 +27,6 @@ def main():
 
         response = bot.run()
         print(f"Response: {response}")
-        c_queue.add(Context(response[1], response[0]))
 
 
 if __name__ == "__main__":

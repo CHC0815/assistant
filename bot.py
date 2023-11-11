@@ -52,4 +52,4 @@ class Bot:
                 **args_dict
             )
 
-        return (response_message.content, response_message.role)
+        return response_message
