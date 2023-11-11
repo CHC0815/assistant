@@ -5,7 +5,9 @@ config = configparser.ConfigParser()
 
 def get_state(id) -> (int, str):
     config.read('config.ini')
-    url = config["HomeAssistant"]["url"] + ":" + config["HomeAssistant"]["port"] + "/api/states/" + id
+    base_url = config["HomeAssistant"]["url"]
+    port = config["HomeAssistant"]["port"]
+    url = base_url + ":" + port + "/api/states/" + id
     headers = {
         "Authorization": "Bearer " + config["HomeAssistant"]["token"],
         "content-type": "application/json"
@@ -17,14 +19,18 @@ def get_state(id) -> (int, str):
 def set_state(id, state) -> (int, str):
     config.read('config.ini')
 
-    url = config["HomeAssistant"]["url"] + ":" + config["HomeAssistant"]["port"] + "/api/services/switch/turn_"
+    base_url = config["HomeAssistant"]["url"]
+    port = config["HomeAssistant"]["port"]
+
+    url = base_url + ":" + port + "/api/services/switch/turn_"
     if state == "on":
         url += "on"
     elif state == "off":
         url += "off"
 
+    token = config["HomeAssistant"]["token"]
     headers = {
-        "Authorization": "Bearer " + config["HomeAssistant"]["token"],
+        "Authorization": "Bearer " + token,
         "content-type": "application/json"
     }
 
@@ -36,8 +42,6 @@ def set_state(id, state) -> (int, str):
     return (response.status_code, response.text)
 
 def main():
-    config.read('config.ini')
-
     print(set_state("test123", "off"))
 
 

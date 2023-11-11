@@ -6,7 +6,7 @@ def play_beep():
     config = configparser.ConfigParser()
     config.read("config.ini")
     noise = AudioSegment.from_wav("./assets/beep.wav")
-    noise = noise + config["Assistant"]["volume"]
+    noise = noise + config["Assistant"]["beep_volume"]
     print('beep')
     play(noise)
 

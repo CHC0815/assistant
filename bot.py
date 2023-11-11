@@ -1,5 +1,6 @@
 from openai import OpenAI
 import json
+from context_queue import ContextQueue, Context
 
 class Bot:
     def __init__(self):
@@ -13,10 +14,16 @@ class Bot:
 
     def add_tool(self, tool):
         self.tools.append(tool)
-
         
     def add_message(self, role, content):
         self.messages.append({"role": role, "content": content})
+
+    def add_context(self, context: Context):
+        self.add_message(context.role, context.content)
+
+    def add_context_queue(self, context_queue: ContextQueue):
+        for context in context_queue.get():
+            self.add_context(context)
 
     def run(self):
         response = self.client.chat.completions.create(
@@ -45,4 +52,4 @@ class Bot:
                 **args_dict
             )
 
-        return response_message
+        return (response_message.content, response_message.role)
