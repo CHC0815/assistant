@@ -19,6 +19,8 @@ Have a Home Assistant server running with API and HTTP enabled.
 3. Create an openai api key and set it as an environment variable
 4. Create a config.ini and populate it
 5. Run ```python3 main.py```
+6. Say the assistants activation word
+7. Say voice command
 
 
 
