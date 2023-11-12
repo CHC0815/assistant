@@ -12,18 +12,22 @@ class Bot:
         self.tools = []
         self.available_functions = {}
 
-    def add_tool(self, tool):
+    def add_tool(self, tool) -> "Bot":
         self.tools.append(tool)
+        return self
         
-    def add_message(self, role, content):
+    def add_message(self, role, content) -> "Bot":
         self.messages.append({"role": role, "content": content})
+        return self
 
-    def add_context(self, context: Context):
+    def add_context(self, context: Context) -> "Bot":
         self.add_message(context.role, context.content)
+        return self
 
-    def add_context_queue(self, context_queue: ContextQueue):
+    def add_context_queue(self, context_queue: ContextQueue) -> "Bot":
         for context in context_queue.get():
             self.add_context(context)
+        return self
 
     def run(self):
         response = self.client.chat.completions.create(
