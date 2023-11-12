@@ -22,7 +22,9 @@ def set_state(id, state) -> (int, str):
     base_url = config["HomeAssistant"]["url"]
     port = config["HomeAssistant"]["port"]
 
-    url = base_url + ":" + port + "/api/services/switch/turn_"
+    type = id.split(".")[0]
+
+    url = base_url + ":" + port + f"/api/services/{type}/turn_"
     if state == "on":
         url += "on"
     elif state == "off":
