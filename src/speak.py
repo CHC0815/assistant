@@ -1,4 +1,3 @@
-import pyttsx3
 from gtts import gTTS
 from playsound import playsound
 

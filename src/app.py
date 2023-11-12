@@ -1,11 +1,11 @@
 import configparser
-from bot import Bot
-from context_queue import Context, ContextQueue
-from recognizer import Recognizer
-from sound import play_beep
-from speak import speak
-from tools.set_light_status import SET_LIGHT_STATUS
-from cmd_parser import parse_command
+from .bot import Bot
+from .context_queue import Context, ContextQueue
+from .recognizer import Recognizer
+from .sound import play_beep
+from .speak import speak
+from .tools.set_light_status import SET_LIGHT_STATUS
+from .cmd_parser import parse_command
 
 class App:
     def __init__(self, config_path: str = "config.ini"):

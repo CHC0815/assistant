@@ -1,6 +1,6 @@
 from openai import OpenAI
 import json
-from context_queue import ContextQueue, Context
+from .context_queue import ContextQueue, Context
 
 class Bot:
     def __init__(self):

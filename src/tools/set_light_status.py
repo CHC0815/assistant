@@ -1,4 +1,4 @@
-from home import set_state, get_state
+from ..home import set_state, get_state
 import configparser
 
 config = configparser.ConfigParser()
