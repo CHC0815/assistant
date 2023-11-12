@@ -1,0 +1,7 @@
+openai
+configparser
+vosk
+sounddevice
+pydub
+playsound
+gtts
