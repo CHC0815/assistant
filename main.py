@@ -4,6 +4,7 @@ from bot import Bot
 import configparser
 from sound import play_beep
 from context_queue import ContextQueue, Context
+from speak import speak
 
 def main():
     config = configparser.ConfigParser()
@@ -13,7 +14,8 @@ def main():
     c_queue = ContextQueue()
 
     while True:
-        name = config["Assistant"]["Name"]
+        name = config["Assistant"]["Name"] or "bob"
+        answer = bool(config["Assistant"]["Answer"] or False)
         rec.listen(trigger=name or "bob")
         play_beep()
         bot = Bot()
@@ -26,6 +28,8 @@ def main():
         c_queue.add(Context("user", promt))
 
         response = bot.run()
+        if answer:
+            speak(response.content)
         print(f"Response: {response}")
 
 
