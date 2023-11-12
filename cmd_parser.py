@@ -1,18 +1,18 @@
 def parse_command(text: str, entities : list[str]) -> (str, str, bool):
-    entitie = ""
+    entity = ""
     state = ""
-    states = ["an", "aus"]
+    states = ["an", "aus", "on", "off"]
     for s in states:
         if s in text:
             state = s
             break
     for e in entities:
         if e in text:
-            entitie = e
+            entity = e
             break
 
-    found = (entities != "" and state != "")
-    return entitie, state, found
+    found = (entity != "" and state != "")
+    return entity, state, found
 
 
 if __name__ == '__main__':

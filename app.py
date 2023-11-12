@@ -5,7 +5,7 @@ from recognizer import Recognizer
 from sound import play_beep
 from speak import speak
 from tools.set_light_status import SET_LIGHT_STATUS
-from cmd_parser import parse_cmd
+from cmd_parser import parse_command
 
 class App:
     def __init__(self, config_path: str = "config.ini"):
@@ -16,11 +16,12 @@ class App:
         self.c_queue = ContextQueue()
         self.answer = bool(self.config["Assistant"]["Answer"] or False)
         self.name = self.config["Assistant"]["Name"] or "bob"
-
+        self.entities = self.config["Mappings"].keys() or []
 
     def get_prompt(self) -> str:
         promt = self.rec.listen()["transcription"]
         print(f"Prompt: {promt}")
+        return promt
 
     def wait_for_activation(self):
         self.rec.listen(trigger=self.name)
@@ -31,9 +32,10 @@ class App:
             play_beep()
             promt = self.get_prompt()
 
-            id, state, success = parse_cmd(promt)
+            id, state, success = parse_command(promt, self.entities)
             if success:
-                self.tool.set_light_status(id, state)
+                print("Command recognized: ", id, state)
+                self.tool["fun"](id, state)
                 continue
 
             bot = Bot().add_context_queue(self.c_queue).add_tool(self.tool)
